@@ -1,16 +1,29 @@
-checksec binexp.....
+# First Overflow (Hard)
 
-objdump -d binary-exploitation-first-overflow | grep -A80 "<challenge>"
+```bash
+checksec /challenge/binary-exploitation-first-overflow
 
-________________________________________________________________________
+objdump -d /challenge/binary-exploitation-first-overflow | grep -A80 "<challenge>"
+```
+
+---
+
+```text
 RBP
+
 local_18   (win_variable)
+
+...
+
 local_64   (input started here)
+```
 
--offset was 71 bytes 
-- It checked if local_18 ie win_variable was positve or not , so we overflowed it with 71 "1's"
+- Offset was **68 bytes**.
+- It checked if `local_18` (i.e. `win_variable`) was positive or not, so we overflowed it with 71 `'1'`s.
 
+---
 
+```asm
 Dump of assembler code for function challenge:
    0x0000000000401cc3 <+0>:     endbr64
    0x0000000000401cc7 <+4>:     push   %rbp
@@ -35,11 +48,10 @@ Dump of assembler code for function challenge:
    0x0000000000401d39 <+118>:   movq   $0x1000,-0x58(%rbp)
    0x0000000000401d41 <+126>:   mov    -0x58(%rbp),%rax
    0x0000000000401d45 <+130>:   mov    %rax,%rsi
-   0x0000000000401d48 <+133>:   lea    0x3c1(%rip),%rdi        # 0x402110
+   0x0000000000401d48 <+133>:   lea    0x3c1(%rip),%rdi
    0x0000000000401d4f <+140>:   mov    $0x0,%eax
    0x0000000000401d54 <+145>:   call   0x401120 <printf@plt>
    0x0000000000401d59 <+150>:   mov    -0x58(%rbp),%rdx
---Type <RET> for more, q to quit, c to continue without paging--c
    0x0000000000401d5d <+154>:   lea    -0x50(%rbp),%rax
    0x0000000000401d61 <+158>:   mov    %rax,%rsi
    0x0000000000401d64 <+161>:   mov    $0x0,%edi
@@ -52,7 +64,7 @@ Dump of assembler code for function challenge:
    0x0000000000401d7e <+187>:   mov    %eax,%edi
    0x0000000000401d80 <+189>:   call   0x401180 <strerror@plt>
    0x0000000000401d85 <+194>:   mov    %rax,%rsi
-   0x0000000000401d88 <+197>:   lea    0x3a9(%rip),%rdi        # 0x402138
+   0x0000000000401d88 <+197>:   lea    0x3a9(%rip),%rdi
    0x0000000000401d8f <+204>:   mov    $0x0,%eax
    0x0000000000401d94 <+209>:   call   0x401120 <printf@plt>
    0x0000000000401d99 <+214>:   mov    $0x1,%edi
@@ -62,7 +74,7 @@ Dump of assembler code for function challenge:
    0x0000000000401da8 <+229>:   je     0x401db4 <challenge+241>
    0x0000000000401daa <+231>:   mov    $0x0,%eax
    0x0000000000401daf <+236>:   call   0x401bbc <win>
-   0x0000000000401db4 <+241>:   lea    0x3a1(%rip),%rdi        # 0x40215c
+   0x0000000000401db4 <+241>:   lea    0x3a1(%rip),%rdi
    0x0000000000401dbb <+248>:   call   0x4010f0 <puts@plt>
    0x0000000000401dc0 <+253>:   mov    $0x0,%eax
    0x0000000000401dc5 <+258>:   mov    -0x8(%rbp),%rcx
@@ -71,41 +83,62 @@ Dump of assembler code for function challenge:
    0x0000000000401dd4 <+273>:   call   0x401110 <__stack_chk_fail@plt>
    0x0000000000401dd9 <+278>:   leave
    0x0000000000401dda <+279>:   ret
-End of assembler dump.
+```
 
--buffer starts at RBP-0x50 
--win_variable is at RBP-0x0c 
--offset was  68 bytes
--I sent 68 bytes which overwrote the win_variable. -The program checks if win_variable is non zero and if it is, it calls win().
+- Buffer starts at `RBP-0x50`.
+- `win_variable` is at `RBP-0x0c`.
+- Offset = `0x50 - 0x0c = 0x44 = 68` bytes.
+- I sent 68 bytes which overwrote the `win_variable`.
+- The program checks if `win_variable` is non-zero, and if it is, it calls `win()`.
 
-jns = Jump if Not Sign (read() returned >= 0) 
-lea -0x50(%rbp),%rax gets the address of the input buffer.
+**Notes**
 
-![[Screenshot 2026-08-03 155340.png]]   (will be in the screenshots)
+- `jns` = Jump if Not Sign (`read()` returned `>= 0`).
+- `lea -0x50(%rbp), %rax` gets the address of the input buffer.
 
-___________________________________
-#Vulnerability
+![[Screenshot 2026-08-03 155340.png]]
 
-lea -0x50(%rbp),%rax
-mov %rax,%rsi
-mov $0,%edi
+---
+
+# Vulnerability
+
+```asm
+lea -0x50(%rbp), %rax
+mov %rax, %rsi
+mov $0, %edi
 
 call read
+```
 
-read is 
-read(fd, buffer, count)
+`read()` is:
 
-Arguments are 
+```c
+read(fd, buffer, count);
+```
 
+Arguments:
+
+```text
 RDI = fd
 RSI = buffer
 RDX = size
+```
 
+Equivalent C:
 
-______________________________________
-for gdb 
-#To break at read (input)
-b *0x401d69 run
+```c
+read(0, buffer, 0x1000);
+```
+
+---
+
+# GDB
+
+To break before `read()`:
+
+```gdb
+b *0x401d69
 run
+```
 
-now inspect rbp , offsets etc as needed.
+Now inspect `rbp`, offsets, stack layout, etc. as needed.
