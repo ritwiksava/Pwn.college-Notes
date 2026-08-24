@@ -1,0 +1,91 @@
+```asm
+Dump of assembler code for function challenge:
+
+0x0000000000401e42 <+0>:    endbr64
+0x0000000000401e46 <+4>:    push   %rbp
+0x0000000000401e47 <+5>:    mov    %rsp,%rbp
+0x0000000000401e4a <+8>:    sub    $0xc0,%rsp
+
+0x0000000000401e51 <+15>:   mov    %edi,-0xa4(%rbp)
+0x0000000000401e57 <+21>:   mov    %rsi,-0xb0(%rbp)
+0x0000000000401e5e <+28>:   mov    %rdx,-0xb8(%rbp)
+
+0x0000000000401e65 <+35>:   mov    %fs:0x28,%rax
+0x0000000000401e6e <+44>:   mov    %rax,-0x8(%rbp)
+0x0000000000401e72 <+48>:   xor    %eax,%eax
+
+0x0000000000401e74 <+50>:   lea    -0x90(%rbp),%rdx
+0x0000000000401e7b <+57>:   mov    $0x0,%eax
+0x0000000000401e80 <+62>:   mov    $0x11,%ecx
+0x0000000000401e85 <+67>:   mov    %rdx,%rdi
+0x0000000000401e88 <+70>:   rep stos %rax,%es:(%rdi)
+
+0x0000000000401e8b <+73>:   movq   $0x0,-0x98(%rbp)
+0x0000000000401e96 <+84>:   movq   $0x1000,-0x98(%rbp)
+
+0x0000000000401ea1 <+95>:   mov    -0x98(%rbp),%rax
+0x0000000000401ea8 <+102>:  mov    %rax,%rsi
+0x0000000000401eab <+105>:  lea    0x125e(%rip),%rdi
+                                # 0x403110
+0x0000000000401eb2 <+112>:  mov    $0x0,%eax
+0x0000000000401eb7 <+117>:  call   0x401120 <printf@plt>
+
+0x0000000000401ebc <+122>:  mov    -0x98(%rbp),%rdx
+0x0000000000401ec3 <+129>:  lea    -0x90(%rbp),%rax
+0x0000000000401eca <+136>:  mov    %rax,%rsi
+0x0000000000401ecd <+139>:  mov    $0x0,%edi
+0x0000000000401ed2 <+144>:  call   0x401140 <read@plt>
+
+0x0000000000401ed7 <+149>:  mov    %eax,-0x9c(%rbp)
+0x0000000000401edd <+155>:  cmpl   $0x0,-0x9c(%rbp)
+0x0000000000401ee4 <+162>:  jns    0x401f12 <challenge+208>
+
+0x0000000000401ee6 <+164>:  call   0x4010e0 <__errno_location@plt>
+0x0000000000401eeb <+169>:  mov    (%rax),%eax
+0x0000000000401eed <+171>:  mov    %eax,%edi
+0x0000000000401eef <+173>:  call   0x401180 <strerror@plt>
+
+0x0000000000401ef4 <+178>:  mov    %rax,%rsi
+0x0000000000401ef7 <+181>:  lea    0x123a(%rip),%rdi
+                                # 0x403138
+0x0000000000401efe <+188>:  mov    $0x0,%eax
+0x0000000000401f03 <+193>:  call   0x401120 <printf@plt>
+
+0x0000000000401f08 <+198>:  mov    $0x1,%edi
+0x0000000000401f0d <+203>:  call   0x401170 <exit@plt>
+
+0x0000000000401f12 <+208>:  mov    -0xc(%rbp),%eax
+0x0000000000401f15 <+211>:  test   %eax,%eax
+0x0000000000401f17 <+213>:  je     0x401f2f <challenge+237>
+
+0x0000000000401f19 <+215>:  lea    0x1240(%rip),%rdi
+                                # 0x403160
+0x0000000000401f20 <+222>:  call   0x4010f0 <puts@plt>
+
+0x0000000000401f25 <+227>:  mov    $0x1,%edi
+0x0000000000401f2a <+232>:  call   0x401170 <exit@plt>
+
+0x0000000000401f2f <+237>:  mov    -0x10(%rbp),%eax
+0x0000000000401f32 <+240>:  test   %eax,%eax
+0x0000000000401f34 <+242>:  je     0x401f40 <challenge+254>
+
+0x0000000000401f36 <+244>:  mov    $0x0,%eax
+0x0000000000401f3b <+249>:  call   0x401d3b <win>
+
+0x0000000000401f40 <+254>:  lea    0x1239(%rip),%rdi
+                                # 0x403180
+0x0000000000401f47 <+261>:  call   0x4010f0 <puts@plt>
+
+0x0000000000401f4c <+266>:  mov    $0x0,%eax
+
+0x0000000000401f51 <+271>:  mov    -0x8(%rbp),%rcx
+0x0000000000401f55 <+275>:  xor    %fs:0x28,%rcx
+0x0000000000401f5e <+284>:  je     0x401f65 <challenge+291>
+
+0x0000000000401f60 <+286>:  call   0x401110 <__stack_chk_fail@plt>
+
+0x0000000000401f65 <+291>:  leave
+0x0000000000401f66 <+292>:  ret
+
+End of assembler dump.
+```
