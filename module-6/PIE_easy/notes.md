@@ -60,7 +60,7 @@ lower 12 bits = 0x337
 To see the binary's fixed addresses:
 
 ```bash
-objdump -d ./binary-exploitation-control-hijack-2
+objdump -d ./binary-exploitation....
 ```
 
 Using GDB, we got:
