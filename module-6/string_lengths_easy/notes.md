@@ -81,6 +81,17 @@ input at least 176 bytes to overwrite it
 - Or use the output, as it gives where `win_authed` is, then calculate the required offset to the target instruction.
 - Received variable is also on the stack, so preserve it so you don't overwrite it.
 
+
+also from disassembly 
+```
+received = [RBP - 0x14]
+```
+
+Input is at 
+lea -0xa0(%rbp),%rax
+
+therefore Recieved is at 140 bytes from the input 
+
 ## memcpy() Arguments
 
 ```text
